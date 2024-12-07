@@ -1,3 +1,5 @@
+const myLibrary = [];
+
 function Book(title, author, pageCount, isRead) {
   this.title = title;
   this.author = author;
@@ -10,7 +12,13 @@ function Book(title, author, pageCount, isRead) {
   };
 }
 
-const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "296 pages", false);
+function addBookToLibrary(title, author, pageCount, isRead) {
+  const newBook = new Book(title, author, pageCount, isRead);
+  myLibrary.push(newBook);
+}
 
+// const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "296 pages", false);
+
+addBookToLibrary("The Hobbit", "J.R.R. Tolkien", "296 pages", false);
 // console.log(Object.getPrototypeOf(theHobbit));
-console.log(theHobbit.valueOf());
+console.log(myLibrary);
