@@ -2,7 +2,9 @@
 import AddBookForm from "@/components/AddBookForm";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Toggle } from "@/components/ui/toggle";
 import { addBookToLibrary, toggleDarkMode } from "@/lib/utils";
+import { BadgeCheck, CircleX } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -65,46 +67,103 @@ export default function Home() {
     );
   }
 
-  return (
-    <div className="flex flex-col max-w-[50%] mx-auto items-center justify-center mt-20">
-      <h1 className="my-20 text-4xl font-sans">my library</h1>
-      {myLibrary.map((book) => (
-        <Card key={book.title} className="p-4 m-4 w-[70%]">
-          <div>
-            <h2>{book.title}</h2>
-            <p>{book.author}</p>
-            <p>{book.pageCount} pages</p>
-            <p>{book.isRead ? "read" : "not read"}</p>
-          </div>
-          <Button type="button" onClick={() => handleRemove(book.title)}>
-            remove
-          </Button>
-        </Card>
-      ))}
-      {!displayForm ? (
-        <Button
-          type="button"
-          onClick={() => setDisplayForm(true)}
-          className="my-4"
-        >
-          add a book
-        </Button>
-      ) : (
-        <AddBookForm
-          addBookToLibrary={addBookToLibrary}
-          myLibrary={myLibrary}
-          setMyLibrary={setMyLibrary}
-          setDisplayForm={setDisplayForm}
-        />
-      )}
+  const toggleReadStatus = (title) => {
+    setMyLibrary((prevLibrary) =>
+      prevLibrary.map((book) =>
+        book.title === title ? { ...book, isRead: !book.isRead } : book
+      )
+    );
+  };
 
-      <Button
-        type="button"
-        onClick={() => toggleDarkMode(setIsDarkMode, isDarkMode)}
-        className="p-2 border my-4"
-      >
-        Toggle {isDarkMode ? "light" : "dark"} mode
-      </Button>
+  return (
+    <div>
+      {displayForm ? (
+        <div className="flex flex-col max-w-[50%] mx-auto items-center justify-center mt-20">
+          <h1 className="my-20 text-4xl font-sans">my library</h1>
+          {myLibrary.map((book) => (
+            <Card key={book.title} className="p-4 m-4 w-[70%]">
+              <div className="flex flex-col gap-2">
+                <h2>{book.title}</h2>
+                <p>{book.author}</p>
+                <p>{book.pageCount} pages</p>
+                <div className="flex flex-row items-center gap-2">
+                  <Toggle onClick={() => toggleReadStatus(book.title)}>
+                    {book.isRead ? (
+                      <>
+                        <BadgeCheck className="text-green-500" />
+                      </>
+                    ) : (
+                      <CircleX className="text-red-500" />
+                    )}
+                  </Toggle>
+                  <p>{book.isRead ? "read" : "not read"}</p>{" "}
+                </div>
+              </div>
+              <Button
+                className="mt-4"
+                type="button"
+                onClick={() => handleRemove(book.title)}
+              >
+                remove
+              </Button>
+            </Card>
+          ))}
+          <AddBookForm
+            addBookToLibrary={addBookToLibrary}
+            myLibrary={myLibrary}
+            setMyLibrary={setMyLibrary}
+            setDisplayForm={setDisplayForm}
+          />
+        </div>
+      ) : (
+        <div className="flex flex-col max-w-[50%] mx-auto items-center justify-center mt-20">
+          <h1 className="my-20 text-4xl font-sans">my library</h1>
+          {myLibrary.map((book) => (
+            <Card key={book.title} className="p-4 m-4 w-[70%]">
+              <div className="flex flex-col gap-2">
+                <h2>{book.title}</h2>
+                <p>{book.author}</p>
+                <p>{book.pageCount} pages</p>
+                <div className="flex flex-row items-center gap-2">
+                  <Toggle onClick={() => toggleReadStatus(book.title)}>
+                    {book.isRead ? (
+                      <>
+                        <BadgeCheck className="text-green-500" />
+                      </>
+                    ) : (
+                      <CircleX className="text-red-500" />
+                    )}
+                  </Toggle>
+                  <p>{book.isRead ? "read" : "not read"}</p>{" "}
+                </div>
+              </div>
+              <Button
+                className="mt-4"
+                type="button"
+                onClick={() => handleRemove(book.title)}
+              >
+                remove
+              </Button>
+            </Card>
+          ))}
+
+          <Button
+            type="button"
+            onClick={() => setDisplayForm(true)}
+            className="my-4"
+          >
+            add a book
+          </Button>
+
+          <Button
+            type="button"
+            onClick={() => toggleDarkMode(setIsDarkMode, isDarkMode)}
+            className="p-2 border my-4"
+          >
+            Toggle {isDarkMode ? "light" : "dark"} mode
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
