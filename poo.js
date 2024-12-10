@@ -12,10 +12,10 @@ function Book(title, author, pageCount, isRead) {
   };
 }
 
-function addBookToLibrary(title, author, pageCount, isRead) {
-  const newBook = new Book(title, author, pageCount, isRead);
-  myLibrary.push(newBook);
-}
+// function addBookToLibrary(title, author, pageCount, isRead) {
+//   const newBook = new Book(title, author, pageCount, isRead);
+//   myLibrary.push(newBook);
+// }
 
 // const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "296 pages", false);
 
